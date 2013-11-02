@@ -1,7 +1,9 @@
+import ParsePy
 from igraph import *
+from graph import *
 from find_neighbor import *
-
-class Edge:
+from find_subgraph import *
+# class Edge:
 # edge = Edge('edgeid', "length", "node1", "node2","bearing1","bearing2")
 # edge1 = Edge( 0, 133.65, 0, 1, -77, 102 )
 # edges = [edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8]
@@ -9,7 +11,6 @@ class Edge:
 # ranked = rankAnglesAccordingToDistanceFromRightAngle(angleArray)
 
 def sub_graph():
-    
     g_query = Graph()
     g_map = Graph()
     
@@ -32,7 +33,7 @@ def sub_graph():
     queue_query = []
     queue_map = []
 	
-    for i in range(0, len(g_query.vs))
+    for i in range(0, len(g_query.vs)):
         queue_query.append( (query_start_ID+i) % len(g_query.vs) )
 
     queue_map.append( findStartingPointInMap(g_query.vs[query_start_ID], g_map) )
@@ -65,12 +66,12 @@ def ISO( queue_query, queue_map, g_query, g_map, results ):                     
     
     for i in candidates:             # 5,6
         queue_map.append(i)                 # 2,4,5
-        if len(queue_map) == len(queue_query)   
+        if len(queue_map) == len(queue_query):   
             iso_subgraph = []
-            for vid in queue_map
+            for vid in queue_map:
                 iso_subgraph.append((g_map.vs[vid]["lat"],g_map.vs[vid]["lng"]))
             results.append(iso_subgraph)
-        else
+        else:
             to_be_checked_edgeID = g_map.get_eid(queue_map[len(queue_map)-1], queue_map[len(queue_map)-2])
             g_map_copy = g_map.copy()
             g_map_copy.es[to_be_checked_edgeID]["checked"] = True
