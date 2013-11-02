@@ -29,8 +29,8 @@ def sub_graph():
     query_start_ID = ranked_ID_Angle[0][0]
     queue_query = []
     queue_map = []
-    for id in enumerate(g_query.vs)
-        queue_query.append((query_start_ID+id) % len(g_query.vs))
+    for v in g_query.vs
+        queue_query.append((query_start_ID+v.index) % len(g_query.vs))
     ISO(queue_query, queue_map, g_query, g_map)
     
 
