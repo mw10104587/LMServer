@@ -1,5 +1,6 @@
 import string, cgi, time
 import sys
+import json
 from os import curdir, sep
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from flask import Flask
@@ -41,10 +42,9 @@ class MyHandler(BaseHTTPRequestHandler):
 	    #self.wfile.write("<HTML>POST OK. <BR><BR>")
 	    #self.wfile.write(upfilecontent[0])
 
-	    
-
 	except: 
 	    pass
+
 
 @app.route('/',methods=['POST','GET'])
 def main():
@@ -54,7 +54,18 @@ def main():
 	print request.form['map']
 	#return make_response( request.form['map'] )
 	
-	return request.form['map']
+	data = [( 25.082994755492088, 121.58237814903259 ),
+  	 	( 25.0832571155483  , 121.58102631568909 ),
+ 	 	( 25.081838421136208, 121.58114433288574 ),
+ 	 	( 25.07980752175368 , 121.58273220062256 ),
+ 	 	( 25.08092500644412 , 121.58591866493225 ),
+ 	 	( 25.081916158242098, 121.58597230911255 ),
+ 	 	( 25.08205219805865 , 121.5845239162445  ),
+ 	 	( 25.08161492668174 , 121.58316135406494 )]
+
+	data_string = json.dumps(data)
+
+	return data_string
 	#server = HTTPServer(('',80), MyHandler)
 	print 'started httpserver...'
 	#server.serve_forever()
