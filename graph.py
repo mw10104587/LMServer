@@ -9,11 +9,14 @@ def fetchGraph():
     
     g = Graph()
 
+    print "Start Downloading"
+
     query = ParsePy.ParseQuery("Node")
     nodes = query.fetch()
     query = ParsePy.ParseQuery("Edge")
     edges = query.fetch()
 
+    print "Download Complete"
     
     g.add_vertices(len(nodes))
 
@@ -21,13 +24,15 @@ def fetchGraph():
         v = g.vs[nodes.index(node)]
         v["checked"] = False
         v["nid"] = str(nodes.index(node))
+        v["objectId"] = node.objectId()
         v["lat"] = node.lat
         v["lng"] = node.lng
         
     for i, edge in enumerate(edges):
-        v1 = g.vs[nodes.index(edge.node1)]
-        v2 = g.vs[nodes.index(edge.node2)]
-        g.add_edges(v1,v2)
+        v1 = g.vs.select(objectId = edge.node1.objectId())[0]
+        v2 = g.vs.select(objectId = edge.node2.objectId())[0]
+
+        g.add_edges( (int(v1["nid"]), int(v2["nid"])) )
         g.es[i]["n"] = {v1["nid"]:edge.bearing1, v2["nid"]:edge.bearing2}
         g.es[i]["length"] = edge.length
         g.es[i]["n1"] = v1["nid"]
