@@ -3,4 +3,4 @@ Flask-Sockets==0.1
 Jinja2==2.6
 Werkzeug==0.8.3
 gunicorn==0.17.2
-igraph==0.6.5
+python-igraph==0.6.5
