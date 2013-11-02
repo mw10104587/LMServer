@@ -25,7 +25,7 @@ def find_neighbor(queue_q, queue, g_q, g_m):
                     continue
         else:
             continue
-
+    return cand
 
 def ang_dis(e_q, e_m, nid_q, nid_m, tolerance = 10):    #Tolerence: Degree
     ang_err = math.fabs(e_q["n"][nid_q] - e_m["n"][nid_m])
