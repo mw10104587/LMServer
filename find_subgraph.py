@@ -75,7 +75,7 @@ def ISO( queue_query, queue_map, g_query, g_map, results ):                     
             g_map_copy = g_map.copy()
             g_map_copy.es[to_be_checked_edgeID]["checked"] = True
             ISO(queue_query, queue_map, g_query, g_map_copy, results)                    # 2,4,5
-            
+
         queue_map.pop()                   
     
-    
+sub_graph()   
