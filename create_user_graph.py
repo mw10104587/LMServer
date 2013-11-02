@@ -50,19 +50,21 @@ def create_user_graph(path):
         g.es[edge_length-1]["bearing2"] = bearing2       
         g.es[edge_length-1]["checked"] = False        
 		
-        print g
+    print g
     return g
 	
 	
 
 def bearing(v1, v2):
-    y = abs(v1["lng"]-v2["lng"])
-    x = abs(v1["lat"]-v2["lat"])
-    theta1 = math.degrees(math.atan2(y,x))
-    theta2 = -90 + theta1
+    x = v2["lng"]-v1["lng"]
+    y = v2["lat"]-v1["lat"]
+    theta1 = math.degrees(math.atan2(y,x))+90
+    theta2 = -180 + theta1
     return (theta1, theta2)
 
 	
 
-path = [(0,0), (3,5), (5,6), (320,568), (0,0)] 
-create_user_graph(path)	
+path = [(159,326), (248,345), (296,441), (385,412), (477,424), (477,489), (270,571), (167,428), (159,326)] 
+g = create_user_graph(path)	
+for i, edge in enumerate(g.es):
+    print g.es[i]["bearing1"], g.es[i]["bearing2"]
