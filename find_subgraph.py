@@ -29,7 +29,7 @@ def sub_graph():
     query_start_ID = ranked_ID_Angle[0][0]
     queue_query = []
     queue_map = []
-    for v in g_query.vs
+    for v in g_query.vs:
         queue_query.append((query_start_ID+v.index) % len(g_query.vs))
     ISO(queue_query, queue_map, g_query, g_map)
     
@@ -38,7 +38,7 @@ def sub_graph():
 def ISO( queue_query, queue_map, g_query, g_map ):                      # 2,4
     candidates = find_neighbor(queue_query, queue_map, g_query, g_map)          # 2,4 [5 or 6]
     
-    for i in candidates             # 5,6
+    for i in candidates:             # 5,6
         queue_map.append(i)                 # 2,4,5
         if len(queue_map) == len(queue_query)   
             iso_subgraph = []
