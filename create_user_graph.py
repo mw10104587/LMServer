@@ -1,8 +1,6 @@
-from igraph import *
 import math
+from igraph import *
 
-
- 
 def create_user_graph(path):
     #path = [(0, 0), (3,5), (320,568)]   
 
@@ -62,9 +60,8 @@ def bearing(v1, v2):
     theta2 = -180 + theta1
     return (theta1, theta2)
 
-	
 
-path = [(159,326), (248,345), (296,441), (385,412), (477,424), (477,489), (270,571), (167,428), (159,326)] 
-g = create_user_graph(path)	
-for i, edge in enumerate(g.es):
-    print g.es[i]["bearing1"], g.es[i]["bearing2"]
+# path = [(159,326), (248,345), (296,441), (385,412), (477,424), (477,489), (270,571), (167,428), (159,326)] 
+# g = create_user_graph(path)	
+# for i, edge in enumerate(g.es):
+#     print g.es[i]["bearing1"], g.es[i]["bearing2"]
