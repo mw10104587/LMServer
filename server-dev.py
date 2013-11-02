@@ -10,6 +10,8 @@ from graph import *
 from findPeculiarAngles import *
 from find_subgraph import *
 from isomorphism import *
+from find_neighbor import *
+from create_user_graph import *
 
 
 app = Flask(__name__)
@@ -58,6 +60,7 @@ def main():
 	print "in try in main"	
 	# path = request.form['path']
 	path = [(0, 0), (3,5), (320,568)]
+	g_query = create_user_graph(path)
 	
 	# output = data
 	data = [( 25.082994755492088, 121.58237814903259 ),
