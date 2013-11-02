@@ -29,10 +29,18 @@ def sub_graph():
     query_start_ID = ranked_ID_Angle[0][0]
     queue_query = []
     queue_map = []
-    for v in g_query.vs:
-        queue_query.append((query_start_ID+v.index) % len(g_query.vs))
+	
+    for i in range(0, len(g_query.vs))
+        queue_query.append( (query_start_ID+i) % len(g_query.vs) )
+
+    findStartingPointInMap(g_query.vs[query_start_ID], g_map)
+
     ISO(queue_query, queue_map, g_query, g_map)
     
+
+def findStartingPointInMap(v_q0, g_map):
+    for i in range(0, len(g_map)):
+        g_map.vs 
 
 
 def ISO( queue_query, queue_map, g_query, g_map ):                      # 2,4

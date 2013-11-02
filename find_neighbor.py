@@ -1,5 +1,5 @@
 import math
-import igraph
+from igraph import *
 
 def find_neighbor(queue_q, queue, g_q, g_m):
     cand = []
