@@ -6,6 +6,11 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from flask import Flask
 from flask import request
 
+from graph import *
+from findPeculiarAngles import *
+from find_subgraph import *
+from isomorphism import *
+
 
 app = Flask(__name__)
 
@@ -51,9 +56,10 @@ def main():
     print "hello"	
     try:
 	print "in try in main"	
-	print request.form['map']
-	#return make_response( request.form['map'] )
+	# path = request.form['path']
+	path = [(0, 0), (3,5), (320,568)]
 	
+	# output = data
 	data = [( 25.082994755492088, 121.58237814903259 ),
   	 	( 25.0832571155483  , 121.58102631568909 ),
  	 	( 25.081838421136208, 121.58114433288574 ),
