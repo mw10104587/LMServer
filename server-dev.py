@@ -11,10 +11,11 @@ from findPeculiarAngles import *
 from find_subgraph import *
 from isomorphism import *
 from find_neighbor import *
+from get_like import *
 
 
 app = Flask(__name__)
-g_query, g_map = None, None
+g_query, g_map, nodes = None, None, []
 
 class MyHandler(BaseHTTPRequestHandler):
 
@@ -54,9 +55,8 @@ class MyHandler(BaseHTTPRequestHandler):
 
 @app.route('/',methods=['POST','GET'])
 def foo():
-    print "hello"   
+    print "Rcv Req"   
     try:
-        print "in try in main"  
         # path = request.form['path']
         # path = [(0, 0), (3,5), (320,568)]
         # g_query = create_user_graph(path)
@@ -65,13 +65,17 @@ def foo():
         
 
         # output = data
-        data = sub_graph(g_query, g_map)
+        # data = sub_graph(g_query, g_map)
+        # data_string = json.dumps(data[len(data)-1])
+        data = get_like(nodes)
+        data_string = json.dumps(data)
 
-        data_string = json.dumps(data[len(data)-1])
+        print "Get Data..."
+        print data_string
 
         return data_string
         #server = HTTPServer(('',80), MyHandler)
-        print 'started httpserver...'
+        # print 'started httpserver...'
         #server.serve_forever()
     except KeyboardInterrupt:
         print 'shutting down'
@@ -85,6 +89,9 @@ def test():
 
 
 if __name__ == '__main__':
-    [g_query, g_map] = initAll()
+    print "Connecting..."
+    # [g_query, g_map] = initAll()
+    nodes = init_like()
+    print "Connected"
     app.run(host='0.0.0.0')
 
