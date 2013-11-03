@@ -19,11 +19,16 @@ def sub_graph():
     # load user query graph
     # load map
     initParse()
-    # g_query = fetchGraph()
-    path = [(159,326), (248,345), (296,441), (385,412), (477,424), (477,489), (270,571), (167,428), (159,326)] 
-    g_query = create_user_graph(path)   
+    g_query = fetchGraph()
+    # path = [(159,326), (248,345), (296,441), (385,412), (477,424), (477,489), (270,571), (167,428), (159,326)] 
+    # g_query = create_user_graph(path)   
     g_map = fetchGraph()
     
+    for i, edge in enumerate(g_query.es):
+        print g_query.es[i]["bearing1"], ",", g_query.es[i]["bearing2"]
+    for i, edge in enumerate(g_map.es):
+        print g_map.es[i]["bearing1"], ",", g_map.es[i]["bearing2"]
+
     # find the most suitable starting vertex
     edges = []
     for i, edge in enumerate(g_query.es):
@@ -87,8 +92,8 @@ def ISO( queue_query, queue_map, g_query, g_map, results ):                     
         else:
             # print queue_map_copy[len(queue_map)-1], queue_map_copy[len(queue_map)-2]
             # print queue_query[len(queue_map)-1], queue_query[len(queue_map)-2]
-            to_be_checked_m_edgeID = g_map.get_eid(queue_map_copy[len(queue_map)-1], queue_map_copy[len(queue_map)-2])
-            to_be_checked_q_edgeID = g_query.get_eid(queue_query[len(queue_map)-1], queue_query[len(queue_map)-2])
+            to_be_checked_m_edgeID = g_map.get_eid(queue_map_copy[len(queue_map_copy)-1], queue_map_copy[len(queue_map_copy)-2])
+            to_be_checked_q_edgeID = g_query.get_eid(queue_query[len(queue_map_copy)-1], queue_query[len(queue_map_copy)-2])
             g_map_copy = g_map.copy()
             g_map_copy.es[to_be_checked_m_edgeID]["checked"] = True
             g_map_copy.vs[queue_map_copy[len(queue_map_copy)-1]]["checked"] = True
@@ -155,9 +160,16 @@ def create_user_graph(path):
 def bearing(v1, v2):
     x = v2["lng"]-v1["lng"]
     y = v2["lat"]-v1["lat"]
-    theta1 = math.degrees(math.atan2(y,x))+90
-    theta2 = -180 + theta1
+    theta1 = rectify( math.degrees(math.atan2(y,x))+90 )
+    theta2 = rectify( -180 + theta1 )
     return (theta1, theta2)
 
+def rectify(theta):
+    if theta > 180:
+        return (theta - 360)
+    elif theta < -180:
+        return (theta + 360)
+    else:
+        return theta
     
 sub_graph()   

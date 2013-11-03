@@ -2,7 +2,7 @@ import math
 from igraph import *
 
 def find_neighbor(queue, queue_m, g_q, g_m):
-    cand = []
+    cand = set()
     # print queue
     queue_q = queue[0:len(queue_m)]
     v_q = g_q.vs[queue_q[len(queue_q)-1]]
@@ -24,9 +24,9 @@ def find_neighbor(queue, queue_m, g_q, g_m):
                         continue
                     else:
                         if adj_edge_m["n1"] != v_m["nid"]:
-                            cand.append(int(adj_edge_m["n1"]))
+                            cand.add(int(adj_edge_m["n1"]))
                         else:
-                            cand.append(int(adj_edge_m["n2"]))
+                            cand.add(int(adj_edge_m["n2"]))
                 else:
                     continue
         else:
@@ -35,9 +35,19 @@ def find_neighbor(queue, queue_m, g_q, g_m):
 
 def ang_dis(e_q, e_m, nid_q, nid_m, tolerance = 90):    #Tolerence: Degree
     # print e_q["n"][nid_q], e_m["n"][nid_m]
-    ang_err = math.fabs(e_q["n"][nid_q] - e_m["n"][nid_m])
+    ang_err = rectify_sharp(math.fabs(e_q["n"][nid_q] - e_m["n"][nid_m]))
     print "|(", e_q["n1"], ",", e_q["n2"], ") - (", e_m["n1"], ",", e_m["n2"], ")|: ",  ang_err
     if ang_err < tolerance:
         return ang_err
     else:
         return -1
+
+def rectify_sharp(theta):
+    if theta > 270:
+        return 360 - theta
+    if theta > 180:
+        return theta -180 
+    elif theta > 90:
+        return 180 - theta
+    else:
+        return theta

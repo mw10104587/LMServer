@@ -56,8 +56,8 @@ def create_user_graph(path):
 def bearing(v1, v2):
     x = v2["lng"]-v1["lng"]
     y = v2["lat"]-v1["lat"]
-    theta1 = math.degrees(math.atan2(y,x))+90
-    theta2 = -180 + theta1
+    theta1 = rectify( math.degrees(math.atan2(y,x))+90 )
+    theta2 = rectify( -180 + theta1 )
     return (theta1, theta2)
 
 
