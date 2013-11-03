@@ -11,18 +11,34 @@ from findPeculiarAngles import *
 # edges = [edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8]
 # angleArray = getAngleArrayWithEdgeArray(edges)
 # ranked = rankAnglesAccordingToDistanceFromRightAngle(angleArray)
-
-def sub_graph():
-    g_query = Graph()
-    g_map = Graph()
-    
+def initAll():
     # load user query graph
     # load map
     initParse()
+    g_query = Graph()
+    g_map = Graph()
+    
     g_query = fetchGraph()
     # path = [(159,326), (248,345), (296,441), (385,412), (477,424), (477,489), (270,571), (167,428), (159,326)] 
     # g_query = create_user_graph(path)   
-    g_map = fetchGraph()
+
+    g_map = fetchGraph("HeartMap")        # HeartMap or ""
+    return [g_query, g_map]
+
+def sub_graph(g_query, g_map): ## New ARG
+
+
+    # # load user query graph
+    # # load map
+    # initParse()
+    # g_query = Graph()
+    # g_map = Graph()
+    
+    # g_query = fetchGraph()
+    # # path = [(159,326), (248,345), (296,441), (385,412), (477,424), (477,489), (270,571), (167,428), (159,326)] 
+    # # g_query = create_user_graph(path)   
+
+    # g_map = fetchGraph("HeartMap")        # HeartMap or ""
     
     for i, edge in enumerate(g_query.es):
         print g_query.es[i]["bearing1"], ",", g_query.es[i]["bearing2"]
@@ -41,21 +57,37 @@ def sub_graph():
     
     query_start_ID = ranked_ID_Angle[0][0]
     queue_query = []
-    queue_map = []
-	
+    results = []
+
     for i in range(0, len(g_query.vs)):
         queue_query.append( (query_start_ID+i) % len(g_query.vs) )
 
-    queue_map.append( int(findStartingPointInMap(g_query.vs[query_start_ID], g_query, g_map)) )
-    g_query.vs[query_start_ID]["checked"] = True
-    g_map.vs[queue_map[0]]["checked"] = True
+    ### NEW
+    cand_s = findStartingPointGroupInMap(g_query.vs[query_start_ID], g_query, g_map)
+    for s in cand_s:
+        queue_map = []
+        queue_map.append( int(s) )
+        g_query_copy = g_query.copy()
+        g_query_copy.vs[query_start_ID]["checked"] = True
+        g_map_copy = g_map.copy()
+        g_map_copy.vs[queue_map[0]]["checked"] = True
 
-    print "Start QID: ", query_start_ID, "Start MID: ", queue_map[0]
+        print "Start QID: ", query_start_ID, "Start MID: ", queue_map[0]
 
-    results = []
+        ISO(queue_query, queue_map, g_query_copy, g_map_copy, results)
+    ###
 
-    ISO(queue_query, queue_map, g_query, g_map, results)
-    
+    ### OLD
+    # queue_map = []
+    # queue_map.append( int(findStartingPointInMap(g_query.vs[query_start_ID], g_query, g_map)) )
+    # g_query.vs[query_start_ID]["checked"] = True
+    # g_map.vs[queue_map[0]]["checked"] = True
+
+    # print "Start QID: ", query_start_ID, "Start MID: ", queue_map[0]
+
+    # ISO(queue_query, queue_map, g_query, g_map, results)
+    ###
+    return results
 
 def findStartingPointInMap(v_q, g_query, g_map):
     adj_eq = g_query.incident(v_q, mode=ALL)
@@ -74,6 +106,23 @@ def findStartingPointInMap(v_q, g_query, g_map):
             min_err_sum = err_sum
             ID = v_m["nid"]
     return ID
+
+def findStartingPointGroupInMap(v_q, g_query, g_map, tolerance = 50):
+    adj_eq = g_query.incident(v_q, mode=ALL)
+    cand_ID = set()
+    for v_m in g_map.vs:
+        adj_em = g_map.incident(v_m, mode=ALL)
+        err_sum = 0
+        for e_q in adj_eq:
+            min_err = 360
+            for e_m in adj_em:
+                err = ang_dis(g_query.es[e_q], g_map.es[e_m], v_q["nid"], v_m["nid"]) 
+                if err < min_err:
+                    min_err = err
+            err_sum += min_err
+        if err_sum < tolerance:
+            cand_ID.add(v_m["nid"])
+    return cand_ID
 
 def ISO( queue_query, queue_map, g_query, g_map, results ):                      # 2,4
     candidates = find_neighbor(queue_query, queue_map, g_query, g_map)          # 2,4 [5 or 6]
@@ -172,4 +221,4 @@ def rectify(theta):
     else:
         return theta
     
-sub_graph()   
+# sub_graph()   
